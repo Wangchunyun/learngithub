@@ -19,7 +19,9 @@ async function producerDLX(connnection, content) {
     const msg = content || 'null';   
     console.log('producer msg：', msg);    
     await ch.sendToQueue(queueResult.queue, new Buffer(msg), { expiration: '10000' });
+    
     ch.close();
+    connnection.close();
 }
 
 // 生成消息
