@@ -18,6 +18,9 @@
   "homepage": "https://github.com/Wangchunyun/learngithub#readme",
   "dependencies": {
     "amqplib": "^0.5.5",
-    "loadsh": "0.0.4"
+    "cheerio": "^1.0.0-rc.3",
+    "loadsh": "0.0.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5"
   }
 }
