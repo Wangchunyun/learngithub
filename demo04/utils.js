@@ -17,12 +17,12 @@ module.exports = {
         const list = []
         // 将html转化为可操作的DOM
         const $ = cheerio.load(data.res)
-        $('#pins li a')
-        .children()
-        .each(async (i, e) => {
+        $('div#imgid ul li a')
+        .each((i, e) => {
+            console.log(i,e)
             let obj = {
-                name: e.attribs.alt,
-                url: e.parent.attribs.href
+                name: 'e.attribs.alt',
+                url:'e.parent.attribs.href' 
             }
             list.push(obj)
         })
@@ -65,7 +65,7 @@ module.exports = {
         if (data.res) {
             let $ = cheerio.load(data.res)
             if($('.main-image').find('img')[0]) {
-                let imageSrc = $('.main-image').find('img')[0].attribs.alt
+                let imageSrc = $('.main-image').find('img')[0].attribs.src
                 // 防防盗链
                 let headers = {
                     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
