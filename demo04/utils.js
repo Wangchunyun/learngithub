@@ -89,5 +89,99 @@ module.exports = {
         } else {
             console.log(`${downloadDir}/${index}.jpg加载失败`)
         }
+    },
+    downloadImg: async (list, index) => {
+        console.log(list, index)
+        if(index === list.length) {
+            start++;
+            if(start < end) {
+                main(basicPath + start)
+            }
+            return false
+        } 
+        
+        if (utils.getTitle(list[index])) {
+            let item = await utils.getPage(list[index].url)
+            let imageNum = utils.getImagesNum(item.res, list[index].name)
+    
+            for(let i = 0; i < imageNum; i++) {
+                let page = utils.getPage(list[index].url + `/${i}`)
+                await utils.downloadImg(page, i)
+            }
+    
+            index++;
+            downloadImg(list, index)
+        } else {
+            index++;
+            downloadImg(list, index)
+        }
+    }, 
+    getNews: async (res, type) => {
+        let news = [];
+        // 访问成功，请求http://news.baidu.com/页面所返回的数据会包含在res.text中。
+        
+        /* 使用cheerio模块的cherrio.load()方法，将HTMLdocument作为参数传入函数
+            以后就可以使用类似jQuery的$(selectior)的方式来获取页面元素
+        */
+
+        // console.log(res.text)
+        // 存入文件
+        // fs.writeFileSync('c:/wcy/1.text',res.text)
+
+        let $ = cheerio.load(res.text);
+
+        // 找到目标数据所在的页面元素，获取数据
+        if(type === 'hot') {
+            $('div#pane-news ul li a').each((idx, ele) => {
+                // cherrio中$('selector').each()用来遍历所有匹配到的DOM元素
+                // 参数idx是当前遍历的元素的索引，ele就是当前便利的DOM元素
+                let obj = {
+                    title: $(ele).text(),        // 获取新闻标题
+                    href: $(ele).attr('href')    // 获取新闻网页链接
+                };
+                news.push(obj)              // 存入最终结果数组
+            });
+        }
+        if(type === 'local') {
+            $('ul#localnews-focus li a').each((index, ele) => {
+                let obj = {
+                    title: $(ele).text(),        // 获取新闻标题        
+                    href: $(ele).attr('href')    // 获取新闻网页链接
+                };
+                news.push(obj)              // 存入最终结果数组
+            })
+
+            if(!news.length) {
+                let url = 'https://news.baidu.com/widget?id=LocalNews&loc=5496&ajax=json&t=1591066980888'
+                res = await rep({ url })
+                let json = JSON.parse(res)
+                news =json.data.LocalNews.data.rows
+            }
+        }
+        if(type === 'world') {
+            $('div#guojie ul li a').each((index, ele) => {
+                let obj = {
+                    title: $(ele).text(),        // 获取新闻标题        
+                    href: $(ele).attr('href')    // 获取新闻网页链接
+                };
+                news.push(obj)              // 存入最终结果数组
+            })
+            
+
+            if(!news.length) {
+                let url = 'https://news.baidu.com/widget?id=InternationalNews&t=1591077273983'
+                res = await rep({ url })
+
+                let $ = cheerio.load(res);
+                $('div#guojie ul li a').each((index, ele) => {
+                    let obj = {
+                        title: $(ele).text(),        // 获取新闻标题        
+                        href: $(ele).attr('href')    // 获取新闻网页链接
+                    };
+                    news.push(obj)              // 存入最终结果数组
+                })
+            }
+        }
+        return news
     }
 }
