@@ -18,11 +18,13 @@ int64_t Fib(int n)
 
 int main()
 {
-    for (int i = 0; i < 50; i++)
-    {
-        cout << "Fib(" << i << ")"
-             << "=" << Fib(i) << endl;
-    }
+    // for (int i = 0; i < 50; i++)
+    // {
+    //     cout << "Fib(" << i << ")"
+    //          << "=" << Fib(i) << endl;
+    // }
+    int a, *p = &a;
+    printf("%d\n", p + 5);
     system("pause");
 
     return 0;
