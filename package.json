@@ -19,9 +19,12 @@
   "dependencies": {
     "amqplib": "^0.5.5",
     "cheerio": "^1.0.0-rc.3",
+    "formidable": "^1.2.2",
+    "koa": "^0.21.1",
     "loadsh": "0.0.4",
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
-    "superagent": "^5.2.2"
+    "superagent": "^5.2.2",
+    "xml2js": "^0.4.23"
   }
 }
