@@ -5,7 +5,6 @@ const url = require("url");
 const fs = require("fs");
 const path = require("path");
 const querystring = require('querystring');
-const { xml } = require('cheerio');
 const ROOT = 'E:/myProjects/learngithub/demo06';
 
 module.exports = {

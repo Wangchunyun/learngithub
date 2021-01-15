@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<header>
+    <title>vue框架学习</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</header>
+
+<body>
+    <div id="root">
+        <div>插槽案例1</div>
+        <Test>
+            <template v-slot:header="{user}">
+                <div>自定义header({{user.a}})</div>
+            </template>
+            <template v-slot="{user}">
+                <div>自定义body({{user.b}})</div>
+            </template>
+        </Test>
+    </div>
+    </template>
+    </Test>
+    </div>
+    <div id="root2">
+        <div>插槽案例2</div>
+        <Test>
+            <template v-slot:[s]="{section}">
+                <div>this is {{section}}</div>
+            </template>
+        </Test>
+        <button @click="change">switch header and body</button>
+    </div>
+    <script>
+        Vue.component('Test', {
+            template: '<div>'
+                + '<slot name="header" :user="obj" :section="\'header\'">'
+                + '<div>默认header</div>'
+                + '</slot>'
+                + '<slot :user="obj" :section="\'body\'">默认body</slot>'
+                + '</div>',
+            data() {
+                return {
+                    obj: { a: 1, b: 2 }
+                }
+            }
+        });
+        new Vue({ el: '#root' });
+        new Vue({
+            el: '#root2',
+            data() {
+                return {
+                    s: "header"
+                };
+            },
+            methods: {
+                change: function () {
+                    this.s == 'header' ? this.s = 'default' : this.s = 'header'
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
